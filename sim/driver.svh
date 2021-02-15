@@ -6,6 +6,9 @@
         `uvm_component_utils(driver)    
         virtual interface fir_if fif;
 
+        int data[$];
+        data = {1, 0, 0, 0, 0, 0, 0, 0, 0};
+
         // constructor
         function new(string name = "driver", uvm_component parent = null );
 
@@ -20,13 +23,13 @@
         endfunction : build_phase
 
         task run_phase(uvm_phase phase);
-            int data_in[$];
-            data_in = {1, 0, 0, 0, 0, 0, 0, 0, 0};
+            
+            
 
             phase.raise_objection(this);
-                for (int i=0; i<data_in.size(); i++)
-                    @(negedge fif.clk);
-                    fif.data_in = data_in.pop_front();
+                for (int i=0; i<data.size(); i++)
+                    @(negedge fif.clk_in);
+                    fif.data_in = data.pop_front();
 
             phase.drop_objection(this);
 
