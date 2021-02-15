@@ -1,5 +1,4 @@
-if [file exists work] {vdel -all}
 vlib work
-vlog -f uvm_example/scripts/compile.f
-vsim -voptargs="+acc" top +UVM_TESTNAME=verbose_test
+vlog -f compile.f
+vsim -novopt -voptargs="+acc" tb_top_fir_lowpass +UVM_TESTNAME=verbose_test
 run -all
