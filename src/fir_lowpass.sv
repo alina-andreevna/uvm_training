@@ -1,37 +1,34 @@
-// FIR_lowpass
+import pkg_fir::*;
 
-`include "../sim/fir_param_pkg.svh"
+module fir_lowpass #(parameter int I_WIDTH = 0,
+					 parameter int O_WIDTH = 0)
+	(input logic clk,
+	input logic rst,
+	input logic [I_WIDTH-1:0] data_in,
+	input coeffs_t coeffs,
+	output logic [O_WIDTH-1:0] data_out);
 
- module fir_lowpass (fir_if.fir f);
+	reg [I_WIDTH-1 : 0] x [1:fir_order];
+	reg [I_WIDTH-1 : 0] data_in_reg = 0;
 
-	localparam order = 8;
+	integer k = 0;
 
-	localparam b0 = 8'd7;
-	localparam b1 = 8'd17;
-	localparam b2 = 8'd32;
-	localparam b3 = 8'd46;
-	localparam b4 = 8'd52;
-	localparam b5 = 8'd46;
-	localparam b6 = 8'd32;
-	localparam b7 = 8'd17;
-	localparam b8 = 8'd7;
+	initial begin
+        display_coeff : for (int i=0; i<fir_order; i++) 	
+		    $display("TB_TOP: Coeff %d = %d", i, coeffs[i]);
+	end
 
-	reg [`INPUT_WORD_SIZE-1 : 0] x[1 : order];
-	reg [`INPUT_WORD_SIZE-1 : 0] data_in_reg;
-	integer k;
+	assign data_out = coeffs[0] * data_in_reg + coeffs[1] * x[1] + coeffs[2] * x[2] + coeffs[3] * x[3] + 
+					coeffs[4] * x[4] + coeffs[5] * x[5] + coeffs[6] * x[6] + coeffs[7] * x[7] + coeffs[8] * x[8];
 
-	assign f.data_out = b0 * data_in_reg + b1 * x[1] + b2 * x[2] + b3 * x[3] + 
-						b4 * x[4] + b5 * x[5] + b6 * x[6] + b7 * x[7] + b8 * x[8];
-
-	always_ff @(posedge f.clk_in) begin : proc_x1
-		if(f.rst_in) begin
-			for (k=1; k<=order; k++) x[k] <= 0;
+	always_ff @(posedge clk) begin : proc_x
+		if(rst) begin
+			for (k=1; k<=fir_order; k++) x[k] <= 0;
 			data_in_reg <= 0;
 		end else begin
-			data_in_reg <= f.data_in;
+			data_in_reg <= data_in;
 			x[1] <= data_in_reg;
-
-			for (k=2; k<=order; k++) x[k] <= x[k-1];
+			for (k=2; k<=fir_order; k++) x[k] <= x[k-1];
 		end
 	end
 
