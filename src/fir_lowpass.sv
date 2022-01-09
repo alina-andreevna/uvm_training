@@ -13,11 +13,6 @@ module fir_lowpass #(parameter int I_WIDTH = 0,
 
 	integer k = 0;
 
-	initial begin
-        display_coeff : for (int i=0; i<fir_order; i++) 	
-		    $display("TB_TOP: Coeff %d = %d", i, coeffs[i]);
-	end
-
 	assign data_out = coeffs[0] * data_in_reg + coeffs[1] * x[1] + coeffs[2] * x[2] + coeffs[3] * x[3] + 
 					coeffs[4] * x[4] + coeffs[5] * x[5] + coeffs[6] * x[6] + coeffs[7] * x[7] + coeffs[8] * x[8];
 
