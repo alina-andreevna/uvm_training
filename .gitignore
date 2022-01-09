@@ -1,10 +1,32 @@
-/*
+*
 
 !.gitignore
 !*.md
 
 !src/
-!sim/
 
-!*.do
+!filter_coeff/
+!filter_coeff/*.txt
+
+!sim/
+!sim/gen_clk/
+!sim/gen_clk/**.sv
+!sim/gen_clk/**.svh
+!sim/gen_coeff/
+!sim/gen_coeff/**.sv
+!sim/gen_coeff/**.svh
+!sim/gen_data/
+!sim/gen_data/**.sv
+!sim/gen_data/**.svh
+!sim/gen_rst/
+!sim/gen_rst/**.sv
+!sim/gen_rst/**.svh
+!sim/tb/
+!sim/tb/**.sv
+!sim/tb/**.svh
+!sim/tests/
+!sim/tests/**.sv
+!sim/tests/**.svh
+!sim/tests/wfs/
+!sim/tests/wfs/*.do
 !*.f
